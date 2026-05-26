@@ -9,13 +9,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-$host     = "sql305.infinityfree.com";
-$dbname   = "if0_42026586_educlass_bd";
-$user     = "if0_42026586";
-$password = "2M712128524m";
+$host     = getenv('MYSQLHOST') ?: 'mysql.railway.internal';
+$dbname   = getenv('MYSQLDATABASE') ?: 'railway';
+$user     = getenv('MYSQLUSER') ?: 'root';
+$password = getenv('MYSQLPASSWORD') ?: 'OyUyyJVuPkMFlpFBrresnKQHFlLNQQkJ';
+$port     = getenv('MYSQLPORT') ?: '3306';
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $password);
+    $pdo = new PDO("mysql:host=$host;port=$port;dbname=$dbname;charset=utf8", $user, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     echo json_encode(["error" => "Conexión fallida: " . $e->getMessage()]);
